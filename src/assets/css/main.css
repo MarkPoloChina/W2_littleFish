@@ -1,0 +1,119 @@
+.body{
+  background-color: rgba(209, 209, 209, 0.404);
+}
+header{
+    backdrop-filter: blur(20px);
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.281);
+    color: rgba(0, 0, 0, 0.993);
+    z-index: 1000;
+}
+.logo{
+    font-size: 27px;
+    height: 100%;
+    padding: 10px 10px 10px 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+    display: inline-block;
+}
+.logo a{
+  text-decoration: none;
+}
+.search{
+  top: 10px;
+  margin-left: 50px;
+  position: absolute;
+  display: inline-block;
+}
+.search-input{
+  width: 500px;
+}
+.link_list{
+    display: inline;
+    right: 20px;
+    position: absolute;
+    top: 25%;
+}
+.func{
+    color: rgb(0, 0, 0);
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+}
+.func:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgba(71, 71, 71, 0.52);
+    text-decoration: none;
+}
+.part_title{
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 24px;
+  padding-top: 15px;
+}
+.main{
+    padding-top: 70px;
+}
+.hotpoint{
+    padding-top: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    text-align: left;
+}
+.sig_pic
+{
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+}
+.sig_good{
+    display: inline-block;
+    width: 200px;
+    height: 300px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.sig_word{
+  width: 100%;
+  position: relative;
+}
+.sig_left{
+  display: inline-block;
+  position: relative;
+  width: 70%;
+}
+.sig_title{
+  display: inline-block;
+  width: 100%;
+  padding-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 20px;
+}
+.sig_title a{
+  text-decoration: none;
+}
+.sig_seller{
+  width: 100%;
+  left: 10px;
+  position: absolute;
+}
+.sig_seller a{
+  text-decoration: none;
+}
+.sig_price{
+  padding: 10px 0 10px 10px;
+  width: 30%;
+  display: inline-block;
+  right: 10px;
+  position: absolute;
+  color: rgba(255, 80, 80, 0.794);
+  font-size: 26px;
+}
