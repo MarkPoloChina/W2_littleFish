@@ -1,6 +1,6 @@
 # littlefish
 
-> A Vue.js project
+> 用于西二前端第二次合作轮
 
 ## Build Setup
 
