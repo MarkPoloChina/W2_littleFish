@@ -29,40 +29,27 @@
     </header>
     <div class="main">
         <div class="part_title">
-            我的购买
+            管理员控制中心
         </div>
-        <div class="myPost">
-          <div class="sig_myPost" v-for="item in data" :key="item">
-            <div class="contain_mp">
-              <div class="memberAndStus">
-                <div class="member">
-                  aaaaaaaaaaaaa
-                  <img src="/static/default.png" class="mp_mbp">
-                </div>
-                <div class="stus">
-                  <button @click="comfirm">确认收货</button>
-                  已被下单
-                </div>
-              </div>
-              <div class="mainArea">
-                <div class="mp_pc">
-                  <img src="/static/default.png" class="mp_mcp">
-                </div>
-                <div class="right_area">
-                  <div class="mp_title">
-                    商品
-                  </div>
-                  <div class="mp_price">
-                    ¥100
-                  </div>
-                </div>
-              </div>
-              <div class="lastInfo">
-                发布于：2019020605
-              </div>
-            </div>
-          </div>
+        <center class="con">
+          <div class="allGoodBtn">
+          <button @click="allGood" class="admin_btn">所有商品</button>
         </div>
+        <div class="findGoodAsId">
+          <div class="input-group search-input">
+      <input type="text" class="form-control" v-model="goodId" @keyup.enter="search" placeholder="输入商品id...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" @click="findGood"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+    </div><!-- /input-group -->
+        </div>
+        <div class="verfiGoodBtn">
+          <button @click="verfiGood" class="admin_btn">审核商品</button>
+        </div>
+        <div class="delSeller">
+          <button @click="delSeller" class="admin_btn">封禁账号</button>
+        </div>
+        </center>
     </div>
   </div>
 </template>
@@ -70,15 +57,15 @@
 import 'bootstrap'
 import axios from 'axios'
 export default {
-  name: 'myPurchase',
+  name: 'admin',
   data () {
     return {
       keyWord: '',
-      data: [0, 2],
       islogin: false,
       currentUsername: '',
       text1: '按标题',
-      text2: '按标签'
+      text2: '按标签',
+      goodId: ''
     }
   },
   created () {
@@ -86,6 +73,13 @@ export default {
     if (sessionStorage.token) {
       this.islogin = true
       this.currentUsername = sessionStorage.userName
+    } else {
+      alert('仅限管理员')
+      return this.$router.push('/')
+    }
+    if (this.currentUsername !== 'admin') {
+      alert('仅限管理员')
+      return this.$router.push('/')
     }
   },
   methods: {
@@ -98,22 +92,18 @@ export default {
       this.$router.push('/search/' + this.keyWord)
     },
     init () {
-      var _this = this
-      axios({
-        method: 'get',
-        url: window.requestUrl + '/getMyItems',
-        params: {
-          type: 2
-        },
-        headers: {
-          'x-auth-token': sessionStorage.token
-        }
-      })
-        .then(function (response) {
-          if (response.data.rspCode === window.OKrsp) {
-            _this.data = response.data.data
-          }
-        })
+    },
+    findGood () {
+      this.$router.push('/')
+    },
+    allGood () {
+      this.$router.push('/admin/allGood')
+    },
+    delSeller () {
+      this.$router.push('/admin/delSeller')
+    },
+    verfiGood () {
+      this.$router.push('/admin/verfiGood')
     },
     logout () {
       axios({
@@ -136,4 +126,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.admin_btn{
+  border: none;
+  background-color: rgba(8, 110, 168, 0.698);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: larger;
+}
+.con{
+  margin-top: 200px;
+}
+.con div{
+  margin-bottom: 20px;
+}
 </style>

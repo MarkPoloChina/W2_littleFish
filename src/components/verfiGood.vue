@@ -29,19 +29,18 @@
     </header>
     <div class="main">
         <div class="part_title">
-            我的购买
+            审核中心
         </div>
         <div class="myPost">
-          <div class="sig_myPost" v-for="item in data" :key="item">
+          <div class="sig_myPost" v-for="item in data" :key="item.id">
             <div class="contain_mp">
               <div class="memberAndStus">
                 <div class="member">
-                  aaaaaaaaaaaaa
+                  {{item.name}}
                   <img src="/static/default.png" class="mp_mbp">
                 </div>
                 <div class="stus">
-                  <button @click="comfirm">确认收货</button>
-                  已被下单
+                  待审核<button class="ps_btn" @click="acc(item.id)">审核通过</button><button class="rf_btn" @click="ref(item.id)">审核不通过</button>
                 </div>
               </div>
               <div class="mainArea">
@@ -50,15 +49,15 @@
                 </div>
                 <div class="right_area">
                   <div class="mp_title">
-                    商品
+                    {{item.name}}
                   </div>
                   <div class="mp_price">
-                    ¥100
+                    ¥{{item.price}}
                   </div>
                 </div>
               </div>
               <div class="lastInfo">
-                发布于：2019020605
+                发布于：{{ item.created }}
               </div>
             </div>
           </div>
@@ -70,11 +69,11 @@
 import 'bootstrap'
 import axios from 'axios'
 export default {
-  name: 'myPurchase',
+  name: 'myPost',
   data () {
     return {
       keyWord: '',
-      data: [0, 2],
+      data: [],
       islogin: false,
       currentUsername: '',
       text1: '按标题',
@@ -86,6 +85,13 @@ export default {
     if (sessionStorage.token) {
       this.islogin = true
       this.currentUsername = sessionStorage.userName
+    } else {
+      alert('仅限管理员')
+      this.$router.push('/')
+    }
+    if (this.currentUsername !== 'admin') {
+      alert('仅限管理员')
+      this.$router.push('/')
     }
   },
   methods: {
@@ -101,10 +107,7 @@ export default {
       var _this = this
       axios({
         method: 'get',
-        url: window.requestUrl + '/getMyItems',
-        params: {
-          type: 2
-        },
+        url: window.requestUrl + '/admin/getUnVerified',
         headers: {
           'x-auth-token': sessionStorage.token
         }
@@ -116,6 +119,7 @@ export default {
         })
     },
     logout () {
+      var _this = this
       axios({
         method: 'put',
         url: window.requestUrl + '/logout',
@@ -126,7 +130,45 @@ export default {
         .then(function (response) {
           if (response.data.rspCode === window.OKrsp) {
             sessionStorage.clear()
-            this.$router.push('/login')
+            _this.$router.push('/login')
+          }
+        })
+    },
+    acc (id) {
+      var _this = this
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/admin/verify',
+        params: {
+          itemId: id,
+          verified: true
+        },
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.init()
+          }
+        })
+    },
+    ref (id) {
+      var _this = this
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/admin/verify',
+        params: {
+          itemId: id,
+          verified: false
+        },
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.init()
           }
         })
     }
@@ -136,4 +178,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.ps_btn{
+  border: none;
+  background-color: rgba(8, 168, 35, 0.623);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px
+}
+.rf_btn{
+  border: none;
+  background-color: rgba(168, 8, 8, 0.657);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px
+}
 </style>

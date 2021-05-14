@@ -29,38 +29,24 @@
     </header>
     <div class="main">
         <div class="part_title">
-            我的购买
+            热门商品
         </div>
-        <div class="myPost">
-          <div class="sig_myPost" v-for="item in data" :key="item">
-            <div class="contain_mp">
-              <div class="memberAndStus">
-                <div class="member">
-                  aaaaaaaaaaaaa
-                  <img src="/static/default.png" class="mp_mbp">
-                </div>
-                <div class="stus">
-                  <button @click="comfirm">确认收货</button>
-                  已被下单
-                </div>
-              </div>
-              <div class="mainArea">
-                <div class="mp_pc">
-                  <img src="/static/default.png" class="mp_mcp">
-                </div>
-                <div class="right_area">
-                  <div class="mp_title">
-                    商品
+        <div class="hotpoint">
+          <div v-for="item in data" :key="item.id" class="sig_good">
+            <a :href="'/goodDetail/' + item.id"><img src="/static/Char_103_angel_2.png" class="sig_pic"></a>
+              <div class="sig_word">
+                <div class="sig_left">
+                  <div class="sig_title">
+                    <a :href="'/goodDetail/' + item.id">{{ item.name }}</a>
                   </div>
-                  <div class="mp_price">
-                    ¥100
+                  <div class="sig_seller">
+                    <a href="#">{{ item.username }}</a>
                   </div>
                 </div>
+                <div class="sig_price">
+                  ¥{{ item.price }}
+                </div>
               </div>
-              <div class="lastInfo">
-                发布于：2019020605
-              </div>
-            </div>
           </div>
         </div>
     </div>
@@ -70,11 +56,11 @@
 import 'bootstrap'
 import axios from 'axios'
 export default {
-  name: 'myPurchase',
+  name: 'allGood',
   data () {
     return {
       keyWord: '',
-      data: [0, 2],
+      data: [],
       islogin: false,
       currentUsername: '',
       text1: '按标题',
@@ -86,6 +72,13 @@ export default {
     if (sessionStorage.token) {
       this.islogin = true
       this.currentUsername = sessionStorage.userName
+    } else {
+      alert('仅限管理员')
+      this.$router.push('/')
+    }
+    if (this.currentUsername !== 'admin') {
+      alert('仅限管理员')
+      this.$router.push('/')
     }
   },
   methods: {
@@ -93,27 +86,6 @@ export default {
       var temp = this.text1
       this.text1 = this.text2
       this.text2 = temp
-    },
-    search () {
-      this.$router.push('/search/' + this.keyWord)
-    },
-    init () {
-      var _this = this
-      axios({
-        method: 'get',
-        url: window.requestUrl + '/getMyItems',
-        params: {
-          type: 2
-        },
-        headers: {
-          'x-auth-token': sessionStorage.token
-        }
-      })
-        .then(function (response) {
-          if (response.data.rspCode === window.OKrsp) {
-            _this.data = response.data.data
-          }
-        })
     },
     logout () {
       axios({
@@ -127,6 +99,24 @@ export default {
           if (response.data.rspCode === window.OKrsp) {
             sessionStorage.clear()
             this.$router.push('/login')
+          }
+        })
+    },
+    search () {
+      this.$router.push('/search/' + this.keyWord)
+    },
+    init () {
+      var _this = this
+      axios({
+        method: 'get',
+        url: window.requestUrl + '/admin/getItems',
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.data = response.data.data
           }
         })
     }

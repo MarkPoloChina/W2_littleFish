@@ -24,7 +24,7 @@
           <a v-if="!islogin" class="func" href="/register">注册</a>
           <a v-if="!islogin" class="func" href="/login">登录</a>
           <a v-if="islogin" class="func" href="/user">用户：{{ currentUsername }}</a>
-          <a v-if="islogin" class="func" href="/user">注销</a>
+          <a v-if="islogin" class="func" href="javascript:void(0);" @click="logout">注销</a>
         </div>
     </header>
     <div class="main">
@@ -44,7 +44,6 @@
             650560865865
           </div>
         </div>
-        <button>修改信息</button>
         </div>
       </div>
       <div class="sellerInfo">
@@ -52,21 +51,12 @@
           <div class="pt2">
         消息列表
         <center v-if="message_list.length == 0">暂无消息</center>
-        <button v-if="message_list.length != 0" class="readAll" @click="readMessage">全部已读</button>
+        <button class="readAll" @click="readMessage">全部已读</button>
       </div>
           <div class="message">
             <ul>
-              <li v-for="item in message_list" :key="item">{{item.content}}</li>
+              <li v-for="item in message_list" :key="item">{{item}}</li>
             </ul>
-          </div>
-        </div>
-      </div>
-      <div class="addInfo">
-        <div class="contain">
-          <div class="function_btn">
-            <button @click="jupto1">我的发布</button>
-            <button @click="jupto2">我的卖出</button>
-            <button @click="jupto3">我的买到</button>
           </div>
         </div>
       </div>
@@ -95,7 +85,7 @@ export default {
       detail: '这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情这是一条详情',
       imageIds: [1],
       sellerAva: '',
-      message_list: []
+      message_list: ['test', 'ttttttttt']
     }
   },
   created () {
@@ -106,14 +96,44 @@ export default {
       this.islogin = true
       this.currentUsername = sessionStorage.userName
     }
-    this.init()
+    // this.init()
   },
   methods: {
     search () {
       this.$router.push('/search/' + this.keyWord)
     },
-    logout () {
+    init () {
       var _this = this
+      axios({
+        method: 'get',
+        url: window.requestUrl + '/item/' + this.goodId
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            if (response.data.data.item.sold) {
+              alert('商品已售出')
+              return _this.$router.push('/')
+            }
+            if (!response.data.data.item.verified) {
+              alert('商品未审核')
+              return _this.$router.push('/')
+            }
+            _this.title = response.data.data.item.name
+            _this.seller = response.data.data.item.username
+            var ts = new Date(response.data.data.item.created)
+            _this.timestamp = ts.toLocaleString()
+            _this.detail = response.data.data.item.detail
+            _this.price = response.data.data.item.price
+            _this.sellerNN = response.data.data.user.nickname
+            _this.imageIds = response.data.data.item.imageIds
+            _this.tag = response.data.data.item.tags
+            _this.sellerAva = response.data.data.user.imageIds
+          }
+        })
+    },
+    readMessage () {
+    },
+    logout () {
       axios({
         method: 'put',
         url: window.requestUrl + '/logout',
@@ -124,35 +144,10 @@ export default {
         .then(function (response) {
           if (response.data.rspCode === window.OKrsp) {
             sessionStorage.clear()
-            _this.$router.push('/login')
+            this.$router.push('/login')
           }
         })
-    },
-    init () {
-      var _this = this
-      axios({
-        method: 'get',
-        url: window.requestUrl + '/message/pull'
-      })
-        .then(function (response) {
-          if (response.data.rspCode === window.OKrsp) {
-            _this.message_list = response.data.data
-          }
-        })
-    },
-    readMessage () {
-      this.$router.push('/myPost')
-    },
-    jupto1 () {
-      this.$router.push('/myPost')
-    },
-    jupto2 () {
-      this.$router.push('/mySell')
-    },
-    jupto3 () {
-      this.$router.push('/myPurchase')
     }
-
   }
 }
 </script>

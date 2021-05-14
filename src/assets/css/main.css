@@ -59,6 +59,7 @@ header{
 }
 .main{
     padding-top: 70px;
+    min-height: 1000px;
 }
 .hotpoint{
     padding-top: 20px;
@@ -117,3 +118,270 @@ header{
   color: rgba(255, 80, 80, 0.794);
   font-size: 26px;
 }
+.topbar{
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.leftInfo{
+  display: inline-block;
+}
+.goodTitle{
+  display: block;
+  font-size: 38px;
+  padding-bottom: 20px;
+}
+.priceAndUsername{
+  padding-bottom: 10px;
+  width: 500px;
+}
+.avaInGoodDiv{
+  display: inline;
+  float: right;
+}
+.avaInGood{
+  width: 120px;
+  border-radius: 10px;
+}
+.price{
+  display: inline-block;
+  color: rgb(255, 80, 80, 0.794);
+  font-size: 28px;
+}
+.username{
+  float: right;
+  padding-right: 15px;
+  padding-top: 10px;
+  font-size: larger;
+}
+.tagList{
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.sig_tag{
+  display: inline-block;
+  padding-right: 20px;
+  font-size: 17px;
+  margin-bottom: 10px;
+  margin-top: 10px;;
+}
+.contain{
+  background-color: rgba(255, 255, 255, 0.527);
+  border-radius: 10px;
+  padding: 10px;
+}
+.contain_lim{
+  background-color: rgba(255, 255, 255, 0.527);
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 480px;
+  font-size: 19px;
+}
+.main_text{
+  display: inline-block;
+  padding-left: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 900px;
+}
+.picSeries{
+  padding-right: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: right;
+}
+.sig_gp{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 250px;
+  border-radius: 10px;
+}
+.gp{
+  width: 250px;
+  border-radius: 10px;
+}
+.addInfo{
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.myPost{
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.member{
+  display: inline-block;
+  font-size: 19px;
+}
+.stus{
+  display: inline-block;
+  right: 150px;
+  position: absolute;
+  font-size: 20px;
+}
+.mp_pc{
+  display: inline-block;
+}
+.right_area{
+  display: inline-block;
+}
+.mp_mcp{
+  width: 160px;
+  border-radius: 10px;
+}
+.mp_mbp{
+  width: 50px;
+  border-radius: 5px;
+}
+.memberAndStus{
+  margin-bottom: 10px;
+}
+.mp_title{
+  font-size: 35px;
+}
+.mp_price{
+  bottom: 20px;
+  position: absolute;
+  color: rgba(255, 80, 80, 0.794);
+  font-size: 22px;
+}
+.mainArea{
+  position: relative;
+}
+.contain_mp{
+  background-color: rgba(255, 255, 255, 0.527);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.list_main{
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.tar_user_ava_p{
+  width: 100px;
+  border-radius: 10px;
+}
+.tar_user_ava{
+  display: inline-block;
+}
+.usernameInBanned{
+  display: inline-block;
+}
+.usernameBanned{
+  font-size: 25px;
+}
+.ref_times{
+  font-size: 19px;
+}
+.action{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  float: right;
+}
+.action button{
+  border: none;
+  background-color: rgba(168, 8, 8, 0.657);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px
+}
+.preorder{
+  float: right;
+}
+.preorder_btn{
+  border: none;
+  background-color: rgba(168, 8, 8, 0.657);
+  border-radius: 10px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  font-size: 15px
+}
+.pt1{
+  margin-bottom: 20px;
+}
+.sellerInfo{
+  width: 100%;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.lim4{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.username2{
+  font-size: 25px;
+}
+.exp_add{
+  font-size: 20px;
+}
+.conn_info{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.pruchrase_order{
+  border: none;
+  background-color: rgba(168, 8, 8, 0.657);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px;
+  margin-top: 20px;
+}
+.left_area{
+  display: inline-block;
+}
+.stat{
+  float: right;
+  font-size: 28px;
+  color: rgb(255, 175, 56);
+}
+.avaInUser{
+  display: inline-block;
+}
+.uaerTitle{
+  font-size: 24px;
+}
+.pt2{
+  padding-left: 20px;
+  padding-bottom: 20px;
+  font-size: 22px;
+}
+.message{
+  padding-left: 20px;
+  padding-bottom: 10px;
+  font-size: 19px;
+}
+.readAll{
+  border: none;
+  background-color: rgba(27, 168, 8, 0.671);
+  border-radius: 10px;
+  color: white;
+  padding: 5px 10px 5px 10px;
+  margin: 10px;
+  font-size: 17px;
+  float: right;
+}
+.function_btn{
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+}
+.function_btn button{
+  border: none;
+  background-color: rgba(65, 143, 231, 0.671);
+  border-radius: 10px;
+  color: white;
+  padding: 5px 10px 5px 10px;
+  margin: 10px;
+  font-size: 17px;
+  float: right;
+  }

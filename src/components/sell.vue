@@ -14,9 +14,10 @@
         </div>
         <div class="link_list">
           <a class="func" href="/sell">发布二手</a>
-          <a class="func" href="/register">注册</a>
-          <a class="func" href="/login">登录</a>
-          <a class="func" href="/user">用户</a>
+          <a v-if="!islogin" class="func" href="/register">注册</a>
+          <a v-if="!islogin" class="func" href="/login">登录</a>
+          <a v-if="islogin" class="func" href="/user">用户：{{ currentUsername }}</a>
+          <a v-if="islogin" class="func" href="javascript:void(0);" @click="logout">注销</a>
         </div>
     </header>
     <div class="main">
@@ -88,12 +89,24 @@ export default {
       desc: '',
       tagList: ['tag1', 'tag2'],
       newTagStr: '',
-      price: ''
+      price: '',
+      pclist: [],
+      islogin: false,
+      currentUsername: ''
     }
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      if (sessionStorage.token) {
+        this.islogin = true
+        this.currentUsername = sessionStorage.userName
+      }
+    },
     search: function () {
-      this.$router.push('/search/123')
+      this.$router.push('/search/' + this.keyWord)
     },
     cutDown (event) {
       this.files = event.file
@@ -114,6 +127,26 @@ export default {
       this.tagList.push(this.newTagStr)
       this.newTagStr = ''
     },
+    postPic () {
+      var _this = this
+      var postForm = new FormData()
+      postForm.append('image', this.files)
+      postForm.append('type', '1')
+      axios({
+        method: 'post',
+        url: window.requestUrl + '/image/upload',
+        data: postForm,
+        headers: {
+          'x-auth-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjA5MTE5MzAsImlhdCI6MTYyMDkwODMzMCwidXNlcm5hbWUiOiJhZG1pbiJ9.v-DubaowvzLRz9K4DGAQyIDwlnHbjTCFM2NmOO3e0iY'
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.pclist.push(parseInt(response.data.data))
+            _this.postGood()
+          }
+        })
+    },
     postGood () {
       var _this = this
       axios({
@@ -124,10 +157,11 @@ export default {
           price: this.price,
           detail: this.desc,
           tags: this.tagList,
+          imageIds: this.pclist,
           username: sessionStorage.userName
         },
         headers: {
-          'x-auth-token': sessionStorage.token
+          'x-auth-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjA5MTE5MzAsImlhdCI6MTYyMDkwODMzMCwidXNlcm5hbWUiOiJhZG1pbiJ9.v-DubaowvzLRz9K4DGAQyIDwlnHbjTCFM2NmOO3e0iY'
         }
       })
         .then(function (response) {
@@ -145,6 +179,22 @@ export default {
       if (this.goodName === '') { return alert('没有商品名') }
       if (!this.desc) { return alert('没有描述') }
       if (!this.price) { return alert('没有价格') }
+      this.postPic()
+    },
+    logout () {
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/logout',
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            sessionStorage.clear()
+            this.$router.push('/login')
+          }
+        })
     }
   },
   watch: {

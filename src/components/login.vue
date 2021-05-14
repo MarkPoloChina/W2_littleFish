@@ -35,7 +35,7 @@
                 </div>
                 <span class="text">记住我</span>
                 <span class="text">&nbsp;&nbsp;&nbsp;没有账户？<a href="/register">立即注册</a></span>
-                <button type="submit" class="btn btn-default">登录</button>
+                <button type="button" class="btn btn-default" @click="login">登录</button>
               </div>
             </form>
           </div>
@@ -72,9 +72,15 @@ export default {
             sessionStorage.clear()
             sessionStorage['token'] = response.headers['x-auth-token']
             sessionStorage['userName'] = _this.userName
+            sessionStorage['userId'] = response.data.data.id
             _this.$router.push('/')
           } else if (response.data.rspCode === window.wrongLogin) {
             alert('错误的用户名或密码')
+            _this.userName = ''
+            _this.pw = ''
+            _this.repw = ''
+          } else if (response.data.rspCode === window.banned) {
+            alert('该账号已被封禁')
             _this.userName = ''
             _this.pw = ''
             _this.repw = ''
@@ -97,6 +103,21 @@ export default {
         return alert('没有密码')
       }
       this.login()
+    },
+    logout () {
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/logout',
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            sessionStorage.clear()
+            this.$router.push('/login')
+          }
+        })
     }
   }
 }

@@ -29,36 +29,24 @@
     </header>
     <div class="main">
         <div class="part_title">
-            我的购买
+            封号中心
         </div>
-        <div class="myPost">
-          <div class="sig_myPost" v-for="item in data" :key="item">
+        <div class="list_main">
+          <div v-for="item in data" :key="item" class="sig_user">
             <div class="contain_mp">
-              <div class="memberAndStus">
-                <div class="member">
-                  aaaaaaaaaaaaa
-                  <img src="/static/default.png" class="mp_mbp">
+              <div class="tar_user_ava">
+                <img class="tar_user_ava_p" src="/static/default.png">
+              </div>
+              <div class="usernameInBanned">
+                <div class="usernameBanned">
+                  ABCED
                 </div>
-                <div class="stus">
-                  <button @click="comfirm">确认收货</button>
-                  已被下单
+                <div class="ref_times">
+                  未过审商品数：5
                 </div>
               </div>
-              <div class="mainArea">
-                <div class="mp_pc">
-                  <img src="/static/default.png" class="mp_mcp">
-                </div>
-                <div class="right_area">
-                  <div class="mp_title">
-                    商品
-                  </div>
-                  <div class="mp_price">
-                    ¥100
-                  </div>
-                </div>
-              </div>
-              <div class="lastInfo">
-                发布于：2019020605
+              <div class="action">
+                <button>封禁</button>
               </div>
             </div>
           </div>
@@ -70,7 +58,7 @@
 import 'bootstrap'
 import axios from 'axios'
 export default {
-  name: 'myPurchase',
+  name: 'delSeller',
   data () {
     return {
       keyWord: '',
@@ -82,10 +70,17 @@ export default {
     }
   },
   created () {
-    this.init()
+    // this.init()
     if (sessionStorage.token) {
       this.islogin = true
       this.currentUsername = sessionStorage.userName
+    } else {
+      alert('仅限管理员')
+      this.$router.push('/')
+    }
+    if (this.currentUsername !== 'admin') {
+      alert('仅限管理员')
+      this.$router.push('/')
     }
   },
   methods: {
@@ -93,27 +88,6 @@ export default {
       var temp = this.text1
       this.text1 = this.text2
       this.text2 = temp
-    },
-    search () {
-      this.$router.push('/search/' + this.keyWord)
-    },
-    init () {
-      var _this = this
-      axios({
-        method: 'get',
-        url: window.requestUrl + '/getMyItems',
-        params: {
-          type: 2
-        },
-        headers: {
-          'x-auth-token': sessionStorage.token
-        }
-      })
-        .then(function (response) {
-          if (response.data.rspCode === window.OKrsp) {
-            _this.data = response.data.data
-          }
-        })
     },
     logout () {
       axios({
@@ -129,6 +103,66 @@ export default {
             this.$router.push('/login')
           }
         })
+    },
+    search () {
+      this.$router.push('/search/' + this.keyWord)
+    },
+    init () {
+      var _this = this
+      axios({
+        method: 'get',
+        url: window.requestUrl + '/searchItem',
+        params: {
+          key: '*',
+          size: '20'
+        },
+        headers: {
+          'x-auth-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.data = response.data.data
+          }
+        })
+    },
+    acc (id) {
+      var _this = this
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/admin/verify',
+        params: {
+          itemId: id,
+          verified: true
+        },
+        headers: {
+          'x-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.init()
+          }
+        })
+    },
+    ref (id) {
+      var _this = this
+      axios({
+        method: 'put',
+        url: window.requestUrl + '/admin/verify',
+        params: {
+          itemId: id,
+          verified: false
+        },
+        headers: {
+          'x-token': sessionStorage.token
+        }
+      })
+        .then(function (response) {
+          if (response.data.rspCode === window.OKrsp) {
+            _this.init()
+          }
+        })
     }
   }
 }
@@ -136,4 +170,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.ps_btn{
+  border: none;
+  background-color: rgba(8, 168, 35, 0.623);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px
+}
+.rf_btn{
+  border: none;
+  background-color: rgba(168, 8, 8, 0.657);
+  border-radius: 15px;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  margin: 10px;
+  font-size: 18px
+}
 </style>
